@@ -8,9 +8,8 @@ import sys
 drive_data=Int32MultiArray()
 #pub = rospy.Publisher("drive", Int32MultiArray, queue_size=10)
 def callback(data):
-
-    pub = rospy.Publisher("drive", Int32MultiArray, queue_size=10)
-    c0 = []
+    
+    c0 = []                                                             # Defining Empty arrays that store data from specific angles as defined below
     c1 = []
     c2 = []
     c3_1 = []
@@ -20,9 +19,8 @@ def callback(data):
     c5 = []
     drive_data.data=[]
     value=data.ranges
-    speed=10
+    speed=10                                                            # Providing speed and angle values from the servo motors of the donkey cars having I2C protocols
     angle=96
-    #print (value)
 
     for x in range(90,270):
         c0.append(value[x])
@@ -66,7 +64,7 @@ def callback(data):
     c5 = min(c5)
     print (c5)
 
-    if c1 <= 0.4:
+    if c1 <= 0.4:                   # Defining control logics for the vehicle to take actions based on the objects detected in a 360 degree scenario.
        speed = 10
        angle = 142
        print('Take a Sharp Right')
@@ -92,6 +90,7 @@ def callback(data):
        print('Take a Sharp Left')
 
     drive_data.data=[speed,angle]
+    pub = rospy.Publisher("drive", Int32MultiArray, queue_size=10)      # Defining a publisher node to publish the values
     rospy.loginfo(drive_data)
     pub.publish(drive_data)
 
